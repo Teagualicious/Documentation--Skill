@@ -22,7 +22,7 @@ When scope is ambiguous, perform enough orientation analysis to propose a sensib
 
 ## 2. Build a deterministic inventory
 
-Run `scripts/inventory_repository.py` when available.
+Run `scripts/inventory_repository.py` when available and read `references/repository-inventory.md` for its output and safety rules. Store the result as `.project-guide/repository-inventory.json` when the working environment permits file creation.
 
 The inventory should identify:
 

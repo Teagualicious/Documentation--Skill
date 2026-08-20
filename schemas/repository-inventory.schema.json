@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/project-documentation-builder/repository-inventory.schema.json",
+  "title": "Repository Inventory",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "root",
+    "generated_at",
+    "options",
+    "summary",
+    "orientation",
+    "files",
+    "skipped_files",
+    "skipped_directories",
+    "analysis_limitations"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "root": {"type": "string", "minLength": 1},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "options": {"type": "object"},
+    "summary": {"type": "object"},
+    "orientation": {"type": "object"},
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "size_bytes",
+          "extension",
+          "category",
+          "analysis_priority",
+          "language",
+          "entry_point",
+          "binary",
+          "sensitive_path",
+          "sensitive_reason",
+          "analysis_eligible",
+          "eligibility_reason",
+          "classification_reason"
+        ],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "size_bytes": {"type": "integer", "minimum": 0},
+          "extension": {"type": "string"},
+          "category": {"enum": ["documentation", "dependency_manifest", "deployment", "configuration", "test", "source", "data", "asset", "unknown"]},
+          "analysis_priority": {"type": "integer", "minimum": 1, "maximum": 3},
+          "language": {"type": ["string", "null"]},
+          "entry_point": {"type": "boolean"},
+          "binary": {"type": ["boolean", "null"]},
+          "sensitive_path": {"type": "boolean"},
+          "sensitive_reason": {"type": ["string", "null"]},
+          "analysis_eligible": {"type": "boolean"},
+          "eligibility_reason": {"type": "string"},
+          "classification_reason": {"type": "string"}
+        }
+      }
+    },
+    "skipped_files": {"type": "array", "items": {"type": "object"}},
+    "skipped_directories": {"type": "array", "items": {"type": "object"}},
+    "analysis_limitations": {"type": "array", "items": {"type": "string"}}
+  }
+}

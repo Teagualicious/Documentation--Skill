@@ -63,7 +63,7 @@ See [`status.md`](status.md) for the complete handoff and implementation phases.
 
 ## Current implementation
 
-Phases 1 and 2 provide a valid `SKILL.md`, four mode workflows, audience-specific templates, low-code platform guidance, a versioned evidence model, JSON schemas, a standard-library semantic validator, synthetic fixtures, and tests. Repository inventory and source analysis helpers begin in Phase 3 and must not be treated as complete until `status.md` marks that phase complete.
+Phases 1 through 3 provide a valid `SKILL.md`, four mode workflows, audience-specific templates, low-code platform guidance, a versioned evidence model, JSON schemas, semantic validation, and a deterministic repository inventory. The inventory classifies files by analysis priority, excludes common generated/vendor directories, identifies likely entry points, and flags sensitive paths without reading or emitting their contents. Guided low-code intake and export parsing begin in Phase 4 and must not be treated as complete until `status.md` marks that phase complete.
 
 ## Validation
 
@@ -71,6 +71,8 @@ Phases 1 and 2 provide a valid `SKILL.md`, four mode workflows, audience-specifi
 python -m unittest discover -s tests -v
 python scripts/validate_evidence.py tests/fixtures/evidence_valid.json
 python scripts/validate_evidence.py tests/fixtures/manifest_valid.json --kind manifest
+python scripts/inventory_repository.py . \
+  --output /tmp/documentation-skill-inventory.json
 ```
 
 ## License

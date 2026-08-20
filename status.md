@@ -4,7 +4,7 @@
 **Active branch:** `build/project-documentation-skill`  
 **Last updated:** 2026-08-20  
 **Overall state:** `IN PROGRESS`  
-**Current phase:** Phase 3 — Repository analysis MVP
+**Current phase:** Phase 4 — Guided-build MVP
 
 ## TL;DR
 
@@ -139,15 +139,28 @@ The user guide is not a shortened developer guide. It must provide only safe rol
 │   └── platform-profiles/
 │       ├── generic-low-code.md
 │       └── power-automate.md
-└── assets/
-    ├── developer-guide-template.md
-    ├── user-guide-template.md
-    ├── troubleshooting-matrix-template.md
-    ├── architecture-diagram-template.md
-    └── workflow-diagram-template.md
+├── assets/
+│   ├── developer-guide-template.md
+│   ├── user-guide-template.md
+│   ├── troubleshooting-matrix-template.md
+│   ├── architecture-diagram-template.md
+│   └── workflow-diagram-template.md
+├── schemas/
+│   ├── project-evidence.schema.json
+│   ├── component.schema.json
+│   ├── workflow.schema.json
+│   ├── documentation-manifest.schema.json
+│   └── repository-inventory.schema.json
+├── scripts/
+│   ├── validate_evidence.py
+│   └── inventory_repository.py
+└── tests/
+    ├── fixtures/
+    ├── test_validate_evidence.py
+    └── test_inventory_repository.py
 ```
 
-The evidence schemas, validator, fixtures, and tests are now present. Repository inventory, document generation, broader validation, and evaluations remain phase-gated.
+The evidence schemas, validator, fixtures, repository inventory, and tests are now present. Guided-build intake, document generation, broader validation, and evaluations remain phase-gated.
 
 ## Phase plan
 
@@ -156,8 +169,8 @@ The evidence schemas, validator, fixtures, and tests are now present. Repository
 | 0 | Foundation and governance | `COMPLETE` | Handoff, README, documentation contract, branch, and phase rules are committed. |
 | 1 | Skill scaffold | `COMPLETE` | Valid `SKILL.md`, all mode files, output templates, platform profiles, and quality references exist. |
 | 2 | Evidence layer | `COMPLETE` | Evidence and manifest schemas exist; validation rejects invalid states, duplicate IDs, incomplete source versions, and unsupported confirmed facts. |
-| 3 | Repository analysis MVP | `IN PROGRESS` | Targeted inventory excludes noise, classifies files, flags sensitive paths, and passes tests. |
-| 4 | Guided-build MVP | `NOT STARTED` | Adaptive low-code intake and Power Automate guidance produce a workflow blueprint with visible unknowns. |
+| 3 | Repository analysis MVP | `COMPLETE` | Targeted inventory excludes noise, classifies files, flags sensitive paths, and passes tests. |
+| 4 | Guided-build MVP | `IN PROGRESS` | Adaptive low-code intake and Power Automate guidance produce a workflow blueprint with visible unknowns. |
 | 5 | Document generation | `NOT STARTED` | Both guides can be generated from one evidence record and pass consistency checks. |
 | 6 | Deterministic validation | `NOT STARTED` | Source-reference, cross-document, and sensitive-value validators are implemented and tested. |
 | 7 | Evaluation and hardening | `NOT STARTED` | Repository, misleading-docs, monorepo, Power Automate, description-only, hybrid, refresh, and security cases are evaluated. |
@@ -212,23 +225,42 @@ Validation:
 
 ### Phase 3 — Repository analysis MVP
 
-Next deliverables:
+Delivered:
 
-- `scripts/inventory_repository.py`
-- Default exclusions
-- Orientation-file classification and priority
-- Sensitive-path flags without exposing contents
-- Standard-library tests with synthetic fixtures
+- `scripts/inventory_repository.py` with deterministic, metadata-first inventory generation
+- `schemas/repository-inventory.schema.json`
+- `references/repository-inventory.md`
+- Default exclusions for version-control, dependency, cache, build, coverage, and generated directories
+- File classification for orientation documentation, dependency manifests, deployment, configuration, tests, source, data, assets, and unknown files
+- Three analysis-priority tiers and likely entry-point detection
+- Sensitive-path detection that records metadata without opening or emitting file contents
+- Binary, oversized-file, symbolic-link, custom-exclusion, and maximum-file safeguards
+- Seven synthetic repository-inventory tests
+
+Validation:
+
+- `python -m unittest discover -s tests -v` passes 17/17 tests across the evidence and inventory layers.
+- All five JSON schema files parse successfully.
+- A self-inventory of this repository completes deterministically with no sensitive paths found.
+- Root-level documentation, including `README.md`, `SKILL.md`, and `status.md`, appears in the priority-one reading list.
+- Sensitive fixtures are never returned in inventory output, and `--fail-on-sensitive` returns the documented nonzero exit code.
+
+Known limitations:
+
+- The inventory identifies likely structure and reading priority; it does not yet parse imports, call graphs, routes, or semantic code relationships.
+- Binary detection is sample-based and intended only to prevent accidental text ingestion, not to identify every file format.
+- Large monorepos still require user- or agent-selected scope after the initial inventory.
 
 ### Phase 4 — Guided-build MVP
 
-Planned deliverables:
+Next deliverables:
 
-- Formal workflow blueprint procedure
-- Adaptive interview coverage
-- Power Automate artifact map
-- Connection, permission, ownership, reliability, and operations coverage
-- Description-only fallback
+- A versioned workflow-blueprint schema shared by low-code and description-only intake
+- A deterministic Power Automate export inspector for solution and non-solution ZIP structures where feasible
+- Artifact-to-evidence mapping for triggers, actions, conditions, loops, connections, environment variables, and run history
+- Adaptive question generation for missing ownership, permissions, reliability, deployment, and recovery details
+- Synthetic Power Automate and description-only fixtures with tests
+- Explicit fallback behavior when an export format cannot be parsed safely
 
 ### Phase 5 — Document generation
 
@@ -284,6 +316,8 @@ The full contract is in `docs/DOCUMENTATION_MAINTENANCE.md`. These rules are non
 - Use a clean implementation inspired by the source prototype rather than copying its code.
 - Keep runtime instructions model-provider-independent; no direct Anthropic SDK dependency.
 - Keep deterministic helpers standard-library-first where practical.
+- Inventory repositories by metadata first; do not emit file contents and do not open sensitive paths.
+- Treat inventory priority as reading order rather than a claim about business importance.
 - Analyze evidence before asking questions.
 - Use one evidence record for both guides.
 - Keep repository analysis read-only unless writes are separately authorized.
@@ -300,6 +334,13 @@ The full contract is in `docs/DOCUMENTATION_MAINTENANCE.md`. These rules are non
 - Diagram portability must be verified across target documentation formats.
 
 ## Change log
+
+### 2026-08-20 — Phase 3 completed
+
+- Added deterministic repository inventory, classification, priority, entry-point, exclusion, binary, size, symlink, and sensitive-path handling.
+- Added the repository-inventory schema, reference guide, and seven tests.
+- Validation passed 17/17 total tests, all schemas parsed, and a self-inventory completed successfully.
+- Updated `README.md` and this handoff in the same phase change.
 
 ### 2026-08-20 — Phase 2 completed
 
@@ -322,10 +363,10 @@ The full contract is in `docs/DOCUMENTATION_MAINTENANCE.md`. These rules are non
 
 ## Exact next actions
 
-1. Implement `scripts/inventory_repository.py` with deterministic sorting and standard-library-only dependencies.
-2. Exclude common vendor, build, cache, and version-control directories.
-3. Classify orientation, source, test, deployment, configuration, data, and asset files.
-4. Assign analysis priority tiers and identify likely entry points.
-5. Flag sensitive paths without reading or outputting their values.
-6. Add synthetic repository tests and CLI validation.
-7. Update this file in the Phase 3 commit to mark Phase 3 complete and Phase 4 in progress.
+1. Define the workflow-blueprint evidence contract for guided-build projects.
+2. Add a Power Automate artifact-profile reference that distinguishes solution exports, non-solution packages, screenshots, and run-history evidence.
+3. Implement a safe ZIP inspector that records package structure and candidate workflow-definition files without extracting unsafe paths or exposing secret values.
+4. Map parsed trigger, action, condition, loop, connection-reference, and environment-variable metadata into the shared evidence model.
+5. Add a description-only intake fixture that preserves unknown implementation details.
+6. Add synthetic Power Automate fixtures and tests for malformed archives, path traversal, unsupported formats, and secret-like values.
+7. Update this file in the Phase 4 commit to mark Phase 4 complete and Phase 5 in progress.
