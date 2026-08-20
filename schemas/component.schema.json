@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/project-documentation-builder/component.schema.json",
+  "title": "Project Component",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "type", "purpose", "verification_state", "implementation_state", "sources"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^COMP-[A-Z0-9_-]+$"},
+    "name": {"type": "string", "minLength": 1},
+    "type": {"type": "string", "minLength": 1},
+    "purpose": {"type": "string", "minLength": 1},
+    "inputs": {"type": "array", "items": {"type": "string"}, "default": []},
+    "outputs": {"type": "array", "items": {"type": "string"}, "default": []},
+    "dependencies": {"type": "array", "items": {"type": "string"}, "default": []},
+    "configuration": {"type": "array", "items": {"type": "string"}, "default": []},
+    "interfaces": {"type": "array", "items": {"type": "string"}, "default": []},
+    "owners": {"type": "array", "items": {"type": "string"}, "default": []},
+    "failure_modes": {"type": "array", "items": {"type": "string"}, "default": []},
+    "diagnostics": {"type": "array", "items": {"type": "string"}, "default": []},
+    "tests": {"type": "array", "items": {"type": "string"}, "default": []},
+    "verification_state": {"enum": ["confirmed", "inferred", "unknown", "conflict"]},
+    "implementation_state": {"enum": ["current", "intended", "planned", "deprecated", "unknown"]},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "rationale": {"type": "string"},
+    "sources": {"type": "array", "items": {"$ref": "project-evidence.schema.json#/$defs/source"}}
+  }
+}

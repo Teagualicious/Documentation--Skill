@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0.0",
+  "project": {
+    "id": "sample-project",
+    "name": "Sample Project",
+    "source_type": "github_repository",
+    "scope": "Sample API service",
+    "included_systems": ["API"],
+    "excluded_systems": ["External identity provider internals"],
+    "audiences": ["developer", "end_user"],
+    "maturity": "testing"
+  },
+  "source_version": {
+    "source_type": "github_repository",
+    "locator": "example/sample-project",
+    "ref": "main",
+    "revision": "0123456789abcdef",
+    "environment": "test",
+    "analyzed_at": "2026-08-20T17:00:00Z"
+  },
+  "facts": [
+    {
+      "id": "FACT-001",
+      "category": "entry_point",
+      "claim": "The API starts from src/main.py.",
+      "verification_state": "confirmed",
+      "implementation_state": "current",
+      "confidence": 1.0,
+      "sources": [{"type": "repository_file", "location": "src/main.py", "version": "0123456789abcdef", "lines": "1-30"}],
+      "used_in": ["developer-guide:architecture"]
+    },
+    {
+      "id": "FACT-002",
+      "category": "ownership",
+      "claim": "The operations owner is not identified in the repository.",
+      "verification_state": "unknown",
+      "implementation_state": "unknown",
+      "confidence": 0.0,
+      "sources": [],
+      "rationale": "No ownership file or support contact was found.",
+      "used_in": ["developer-guide:maintenance", "user-guide:getting-help"]
+    }
+  ],
+  "components": [
+    {
+      "id": "COMP-API",
+      "name": "Sample API",
+      "type": "service",
+      "purpose": "Accept sample requests and return results.",
+      "inputs": ["HTTP request"],
+      "outputs": ["JSON response"],
+      "dependencies": [],
+      "configuration": ["PORT"],
+      "interfaces": ["POST /sample"],
+      "owners": [],
+      "failure_modes": ["Invalid request"],
+      "diagnostics": ["Application log"],
+      "tests": ["tests/test_api.py"],
+      "verification_state": "confirmed",
+      "implementation_state": "current",
+      "confidence": 1.0,
+      "sources": [{"type": "repository_file", "location": "src/main.py", "version": "0123456789abcdef"}]
+    }
+  ],
+  "workflows": [
+    {
+      "id": "WF-SUBMIT",
+      "name": "Submit sample request",
+      "actor": "API consumer",
+      "preconditions": ["Consumer can reach the service"],
+      "trigger": "POST /sample",
+      "steps": [
+        {"order": 1, "name": "Validate request", "description": "Validate required fields.", "component_id": "COMP-API"},
+        {"order": 2, "name": "Return response", "description": "Return a JSON result.", "component_id": "COMP-API"}
+      ],
+      "outputs": ["JSON result"],
+      "success_state": "HTTP 200 response with a result",
+      "failure_states": ["HTTP 400 for invalid input"],
+      "retry_behavior": "Correct invalid input before retrying.",
+      "duplicate_risk": "none",
+      "recovery": ["Correct the request and submit again"],
+      "escalation_conditions": ["Valid requests repeatedly return server errors"],
+      "verification_state": "confirmed",
+      "implementation_state": "current",
+      "confidence": 1.0,
+      "sources": [{"type": "repository_file", "location": "src/main.py", "version": "0123456789abcdef", "lines": "10-30"}]
+    }
+  ],
+  "open_questions": [
+    {
+      "id": "Q-OWNER",
+      "question": "Who owns operational support?",
+      "why_it_matters": "Both guides need an accurate escalation route.",
+      "proposed_assumption": "Leave the support owner marked unknown until confirmed.",
+      "status": "open",
+      "related_ids": ["FACT-002"]
+    }
+  ],
+  "analysis_limitations": ["External identity provider internals were out of scope."]
+}

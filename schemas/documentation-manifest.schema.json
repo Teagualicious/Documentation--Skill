@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/project-documentation-builder/documentation-manifest.schema.json",
+  "title": "Documentation Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "project_id", "evidence_file", "source_version", "generated_at", "documents", "validation", "change_summary", "unresolved_question_ids"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "project_id": {"type": "string", "minLength": 1},
+    "evidence_file": {"type": "string", "minLength": 1},
+    "source_version": {"$ref": "project-evidence.schema.json#/$defs/sourceVersion"},
+    "previous_source_version": {"$ref": "project-evidence.schema.json#/$defs/sourceVersion"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "documents": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["developer", "user"],
+      "properties": {
+        "developer": {"$ref": "#/$defs/document"},
+        "user": {"$ref": "#/$defs/document"}
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "checks"],
+      "properties": {
+        "status": {"enum": ["passed", "partial", "failed"]},
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "status"],
+            "properties": {
+              "name": {"type": "string", "minLength": 1},
+              "status": {"enum": ["passed", "partial", "failed", "not_run"]},
+              "notes": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    "change_summary": {"type": "array", "items": {"type": "string"}},
+    "changed_component_ids": {"type": "array", "items": {"type": "string"}, "default": []},
+    "changed_workflow_ids": {"type": "array", "items": {"type": "string"}, "default": []},
+    "unresolved_question_ids": {"type": "array", "items": {"type": "string"}}
+  },
+  "$defs": {
+    "document": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["filename", "sections", "evidence_fact_ids"],
+      "properties": {
+        "filename": {"type": "string", "minLength": 1},
+        "sections": {"type": "array", "items": {"type": "string"}},
+        "evidence_fact_ids": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}
