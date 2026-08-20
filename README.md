@@ -13,7 +13,7 @@ This repository is under an explicitly phased build. The authoritative implement
 
 The documentation-update contract is maintained in [`docs/DOCUMENTATION_MAINTENANCE.md`](docs/DOCUMENTATION_MAINTENANCE.md). A phase is not complete unless its implementation and affected documentation are updated together.
 
-## Planned operating modes
+## Operating modes in the current scaffold
 
 - **Repository Analysis Mode** — inspect a GitHub repository, local repository, or uploaded source archive; analyze first, then ask only questions that cannot be answered from the codebase.
 - **Guided Build Mode** — document Power Automate, Power Apps, SharePoint, Excel/VBA, Zapier, Make, and other low-code or process-heavy projects through exports, screenshots, diagrams, descriptions, and adaptive clarification.
@@ -43,7 +43,7 @@ Internal support artifacts are used to keep those documents accurate and synchro
 
 ## Repository map
 
-The planned structure is:
+The current scaffold follows this structure:
 
 ```text
 .
@@ -60,6 +60,10 @@ The planned structure is:
 ```
 
 See [`status.md`](status.md) for the complete handoff and implementation phases.
+
+## Current implementation
+
+Phase 1 provides a valid `SKILL.md`, four mode workflows, audience-specific output templates, source-priority rules, an adaptive question bank, a quality rubric, and generic low-code plus Power Automate guidance. Deterministic evidence schemas and repository-analysis scripts are built in later phases and must not be treated as complete until `status.md` marks them complete.
 
 ## License
 
