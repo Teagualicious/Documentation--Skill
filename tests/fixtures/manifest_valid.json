@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "project_id": "sample-project",
+  "evidence_file": ".project-guide/evidence.json",
+  "source_version": {
+    "source_type": "github_repository",
+    "locator": "example/sample-project",
+    "ref": "main",
+    "revision": "0123456789abcdef",
+    "environment": "test",
+    "analyzed_at": "2026-08-20T17:00:00Z"
+  },
+  "generated_at": "2026-08-20T17:05:00Z",
+  "documents": {
+    "developer": {"filename": "DEVELOPER_GUIDE.md", "sections": ["architecture", "workflow"], "evidence_fact_ids": ["FACT-001", "FACT-002"]},
+    "user": {"filename": "USER_GUIDE.md", "sections": ["primary-workflow", "getting-help"], "evidence_fact_ids": ["FACT-002"]}
+  },
+  "validation": {"status": "passed", "checks": [{"name": "evidence validation", "status": "passed"}]},
+  "change_summary": ["Initial documentation generation"],
+  "changed_component_ids": ["COMP-API"],
+  "changed_workflow_ids": ["WF-SUBMIT"],
+  "unresolved_question_ids": ["Q-OWNER"]
+}

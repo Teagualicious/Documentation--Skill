@@ -4,7 +4,7 @@
 **Active branch:** `build/project-documentation-skill`  
 **Last updated:** 2026-08-20  
 **Overall state:** `IN PROGRESS`  
-**Current phase:** Phase 2 — Evidence layer
+**Current phase:** Phase 3 — Repository analysis MVP
 
 ## TL;DR
 
@@ -147,7 +147,7 @@ The user guide is not a shortened developer guide. It must provide only safe rol
     └── workflow-diagram-template.md
 ```
 
-Schemas, deterministic scripts, tests, and evaluations are added in later phases and must not be treated as complete until the phase table says so.
+The evidence schemas, validator, fixtures, and tests are now present. Repository inventory, document generation, broader validation, and evaluations remain phase-gated.
 
 ## Phase plan
 
@@ -155,8 +155,8 @@ Schemas, deterministic scripts, tests, and evaluations are added in later phases
 |---|---|---:|---|
 | 0 | Foundation and governance | `COMPLETE` | Handoff, README, documentation contract, branch, and phase rules are committed. |
 | 1 | Skill scaffold | `COMPLETE` | Valid `SKILL.md`, all mode files, output templates, platform profiles, and quality references exist. |
-| 2 | Evidence layer | `IN PROGRESS` | Evidence and manifest schemas exist; validation rejects invalid states, duplicate IDs, incomplete source versions, and unsupported confirmed facts. |
-| 3 | Repository analysis MVP | `NOT STARTED` | Targeted inventory excludes noise, classifies files, flags sensitive paths, and passes tests. |
+| 2 | Evidence layer | `COMPLETE` | Evidence and manifest schemas exist; validation rejects invalid states, duplicate IDs, incomplete source versions, and unsupported confirmed facts. |
+| 3 | Repository analysis MVP | `IN PROGRESS` | Targeted inventory excludes noise, classifies files, flags sensitive paths, and passes tests. |
 | 4 | Guided-build MVP | `NOT STARTED` | Adaptive low-code intake and Power Automate guidance produce a workflow blueprint with visible unknowns. |
 | 5 | Document generation | `NOT STARTED` | Both guides can be generated from one evidence record and pass consistency checks. |
 | 6 | Deterministic validation | `NOT STARTED` | Source-reference, cross-document, and sensitive-value validators are implemented and tested. |
@@ -195,23 +195,24 @@ Validation:
 
 ### Phase 2 — Evidence layer
 
-Next deliverables:
+Delivered:
 
-- `references/evidence-model.md`
-- `schemas/project-evidence.schema.json`
-- `schemas/component.schema.json`
-- `schemas/workflow.schema.json`
-- `schemas/documentation-manifest.schema.json`
-- `scripts/validate_evidence.py`
-- Synthetic evidence fixtures and tests
+- Versioned evidence-model reference
+- Project evidence, component, workflow, and documentation-manifest schemas
+- Standard-library evidence and manifest validator
+- Synthetic evidence and manifest fixtures
+- Ten unit tests covering valid records and high-risk invalid cases
 
-Completion gate:
+Validation:
 
-- Invalid verification or implementation states, duplicate IDs, missing sources for confirmed facts, and incomplete source-version records are rejected.
+- All four JSON schema files parse successfully.
+- `python -m unittest discover -s tests -v` passes 10/10 tests.
+- Both valid fixtures pass the command-line validator.
+- Confirmed items without sources, duplicate IDs, invalid states, incomplete source versions, unresolved conflicts, answered questions without answers, missing guide records, and invalid validation states are rejected.
 
 ### Phase 3 — Repository analysis MVP
 
-Planned deliverables:
+Next deliverables:
 
 - `scripts/inventory_repository.py`
 - Default exclusions
@@ -300,12 +301,19 @@ The full contract is in `docs/DOCUMENTATION_MAINTENANCE.md`. These rules are non
 
 ## Change log
 
+### 2026-08-20 — Phase 2 completed
+
+- Added the evidence model, schemas, semantic validator, fixtures, and tests.
+- Validation passed 10/10 unit tests and both command-line fixture checks.
+- Updated `README.md` and this handoff in the same phase change.
+
 ### 2026-08-20 — Phase 1 completed
 
 - Added the runtime skill scaffold and all four mode workflows.
 - Added audience-specific templates and low-code platform guidance.
 - Added source-priority, clarification, quality, security, and safety rules.
 - Updated `README.md` and this handoff in the same phase change.
+- Phase 1 commit: `9805d280ec28610e3509e33c013864ab219e0d61`.
 
 ### 2026-08-20 — Phase 0 completed
 
@@ -314,9 +322,10 @@ The full contract is in `docs/DOCUMENTATION_MAINTENANCE.md`. These rules are non
 
 ## Exact next actions
 
-1. Implement the evidence model reference.
-2. Add project-evidence, component, workflow, and manifest schemas.
-3. Add a standard-library evidence validator.
-4. Add synthetic valid and invalid fixtures plus tests.
-5. Run all Phase 2 checks.
-6. Update this file in the Phase 2 commit to mark Phase 2 complete and Phase 3 in progress.
+1. Implement `scripts/inventory_repository.py` with deterministic sorting and standard-library-only dependencies.
+2. Exclude common vendor, build, cache, and version-control directories.
+3. Classify orientation, source, test, deployment, configuration, data, and asset files.
+4. Assign analysis priority tiers and identify likely entry points.
+5. Flag sensitive paths without reading or outputting their values.
+6. Add synthetic repository tests and CLI validation.
+7. Update this file in the Phase 3 commit to mark Phase 3 complete and Phase 4 in progress.

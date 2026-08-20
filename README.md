@@ -63,7 +63,15 @@ See [`status.md`](status.md) for the complete handoff and implementation phases.
 
 ## Current implementation
 
-Phase 1 provides a valid `SKILL.md`, four mode workflows, audience-specific output templates, source-priority rules, an adaptive question bank, a quality rubric, and generic low-code plus Power Automate guidance. Deterministic evidence schemas and repository-analysis scripts are built in later phases and must not be treated as complete until `status.md` marks them complete.
+Phases 1 and 2 provide a valid `SKILL.md`, four mode workflows, audience-specific templates, low-code platform guidance, a versioned evidence model, JSON schemas, a standard-library semantic validator, synthetic fixtures, and tests. Repository inventory and source analysis helpers begin in Phase 3 and must not be treated as complete until `status.md` marks that phase complete.
+
+## Validation
+
+```bash
+python -m unittest discover -s tests -v
+python scripts/validate_evidence.py tests/fixtures/evidence_valid.json
+python scripts/validate_evidence.py tests/fixtures/manifest_valid.json --kind manifest
+```
 
 ## License
 

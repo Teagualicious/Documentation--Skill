@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/project-documentation-builder/workflow.schema.json",
+  "title": "Project Workflow",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "actor", "trigger", "steps", "success_state", "verification_state", "implementation_state", "sources"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^WF-[A-Z0-9_-]+$"},
+    "name": {"type": "string", "minLength": 1},
+    "actor": {"type": "string", "minLength": 1},
+    "preconditions": {"type": "array", "items": {"type": "string"}, "default": []},
+    "trigger": {"type": "string", "minLength": 1},
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["order", "name", "description"],
+        "properties": {
+          "order": {"type": "integer", "minimum": 1},
+          "name": {"type": "string", "minLength": 1},
+          "description": {"type": "string", "minLength": 1},
+          "component_id": {"type": "string"},
+          "branch": {"type": "string"},
+          "input": {"type": "string"},
+          "output": {"type": "string"}
+        }
+      }
+    },
+    "outputs": {"type": "array", "items": {"type": "string"}, "default": []},
+    "success_state": {"type": "string", "minLength": 1},
+    "failure_states": {"type": "array", "items": {"type": "string"}, "default": []},
+    "retry_behavior": {"type": "string"},
+    "duplicate_risk": {"enum": ["none", "possible", "confirmed", "unknown"]},
+    "recovery": {"type": "array", "items": {"type": "string"}, "default": []},
+    "escalation_conditions": {"type": "array", "items": {"type": "string"}, "default": []},
+    "verification_state": {"enum": ["confirmed", "inferred", "unknown", "conflict"]},
+    "implementation_state": {"enum": ["current", "intended", "planned", "deprecated", "unknown"]},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "rationale": {"type": "string"},
+    "sources": {"type": "array", "items": {"$ref": "project-evidence.schema.json#/$defs/source"}}
+  }
+}
